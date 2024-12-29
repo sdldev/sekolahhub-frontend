@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCategories, getCategory, getPosts } from '../../utils/api';
+
+export async function getStaticPaths() {
+  const categories = await getCategories();
+  return categories.map(category => ({
+    params: { id: category.id.toString() },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const posts = await getPosts();
+const categoryPosts = posts.filter(post => post.category_id === category.id);
+---
+
+<Layout title={category.name}>
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-4">{category.name}</h1>
+    <p class="text-gray-600 mb-8">{category.description}</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {categoryPosts.map(post => <PostCard post={post} />)}
+    </div>
+  </main>
+</Layout>
