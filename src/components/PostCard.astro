@@ -1,7 +1,6 @@
 ---
 import type { Post } from '../types/Post';
 import { stripHtmlTags } from '../utils/textUtils';
-import { getUser, getCategory } from '../utils/api';
 
 interface Props {
   post: Post;
@@ -9,18 +8,6 @@ interface Props {
 
 const { post } = Astro.props;
 
-// Fetch related data with error handling
-let author;
-let category;
-
-try {
-  [author, category] = await Promise.all([
-    getUser(post.user_id),
-    getCategory(post.category_id)
-  ]);
-} catch (error) {
-  console.error('Error fetching related data:', error);
-}
 
 const formattedDate = new Date(post.created_at).toLocaleDateString();
 const cleanContent = stripHtmlTags(post.content);
@@ -35,17 +22,6 @@ const cleanContent = stripHtmlTags(post.content);
     />
   )}
   <div class="p-6">
-    <div class="flex items-center gap-4 mb-4">
-      {category && (
-        <a 
-          href={`/categories/${category.id}`}
-          class="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-200"
-        >
-          {category.name}
-        </a>
-      )}
-      {author && <span class="text-gray-600 text-sm">By {author.name}</span>}
-    </div>
     <h2 class="text-2xl font-bold mb-2">
       <a href={`/post/${post.id}`} class="text-gray-900 hover:text-blue-600">
         {post.title}

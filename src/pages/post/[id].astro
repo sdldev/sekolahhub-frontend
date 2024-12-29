@@ -1,7 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getPost, getPosts } from '../../utils/api';
-import { stripHtmlTags } from '../../utils/textUtils';
+import { getPosts } from '../../utils/api';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
