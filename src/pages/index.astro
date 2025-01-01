@@ -1,25 +1,56 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PostCard from '../components/PostCard.astro';
-import { getPosts } from '../utils/api';
+import BlogPost from '../components/BlogPost.astro';
+import Pagination from '../components/Pagination.astro';
+import { getPosts, getCategories } from '../lib/api';
+import { getPaginationData } from '../utils/pagination';
 
-let posts = [];
-try {
-  posts = await getPosts();
-} catch (error) {
-  console.error('Error fetching posts:', error);
-}
+const ITEMS_PER_PAGE = 6;
+const page = Number(Astro.url.searchParams.get('page') || 1);
+
+const posts = await getPosts();
+const categories = await getCategories();
+
+const { items: paginatedPosts, pagination } = getPaginationData(posts, page, ITEMS_PER_PAGE);
 ---
 
-<Layout title="News Magazine">
-  <main class="max-w-6xl mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold text-center mb-12">Latest News</h1>
+<Layout title="Blog">
+  <main>
+    <h1 class="text-4xl font-bold text-white mb-8">Latest Posts</h1>
+    
+    <nav class="mb-8">
+      <ul class="flex gap-4">
+        {categories.map((category) => (
+          <li>
+            <a 
+              href={`/categories/${category.slug}`}
+              class="text-white px-4 py-2 rounded-md bg-primary/20 hover:bg-primary/40 transition-colors"
+            >
+              {category.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {Array.isArray(posts) && posts.length > 0 ? (
-        posts.map(post => <PostCard post={post} />)
-      ) : (
-        <p class="text-center col-span-full text-gray-600">No posts available at the moment.</p>
-      )}
+      {paginatedPosts.map((post) => (
+        <BlogPost {...post} />
+      ))}
     </div>
+
+    <Pagination
+      currentPage={pagination.currentPage}
+      totalPages={pagination.totalPages}
+      baseUrl="/?page="
+    />
   </main>
 </Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    max-width: 1200px;
+  }
+</style>

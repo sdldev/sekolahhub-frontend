@@ -1,0 +1,83 @@
+---
+import { getImageUrl, getFallbackImageUrl } from '../utils/image';
+
+interface Props {
+  title: string;
+  slug: string;
+  image: string;
+  imagecaption: string;
+  category: string;
+  author: string;
+  created_at: string;
+}
+
+const { title, slug, image, imagecaption, category, author, created_at } = Astro.props;
+const imageUrl = image ? getImageUrl(image) : getFallbackImageUrl();
+---
+
+<article class="blog-post">
+  <img 
+    src={imageUrl}
+    alt={imagecaption}
+    class="post-image"
+    onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image'"
+  />
+  <div class="post-content">
+    <h2 class="post-title">
+      <a href={`/posts/${slug}`}>{title}</a>
+    </h2>
+    <div class="post-meta">
+      <span class="category">{category}</span>
+      <span class="author">By {author}</span>
+      <time datetime={created_at}>
+        {new Date(created_at).toLocaleDateString()}
+      </time>
+    </div>
+  </div>
+</article>
+
+<style>
+  .blog-post {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+  }
+
+  .post-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .post-content {
+    padding: 1.5rem;
+  }
+
+  .post-title {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+  }
+
+  .post-title a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  .post-title a:hover {
+    color: rgb(var(--accent));
+  }
+
+  .post-meta {
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .category {
+    color: rgb(var(--accent));
+    font-weight: bold;
+  }
+</style>

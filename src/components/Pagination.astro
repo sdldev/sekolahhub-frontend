@@ -1,0 +1,45 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+---
+
+<nav class="flex justify-center mt-8 gap-2">
+  {currentPage > 1 && (
+    <a
+      href={`${baseUrl}${currentPage - 1}`}
+      class="px-3 py-1 rounded bg-primary/10 text-white hover:bg-primary/20 transition-colors"
+    >
+      Previous
+    </a>
+  )}
+  
+  {pages.map((page) => (
+    <a
+      href={`${baseUrl}${page}`}
+      class:list={[
+        'px-3 py-1 rounded transition-colors',
+        page === currentPage 
+          ? 'bg-primary text-white'
+          : 'bg-primary/10 text-white hover:bg-primary/20'
+      ]}
+    >
+      {page}
+    </a>
+  ))}
+  
+  {currentPage < totalPages && (
+    <a
+      href={`${baseUrl}${currentPage + 1}`}
+      class="px-3 py-1 rounded bg-primary/10 text-white hover:bg-primary/20 transition-colors"
+    >
+      Next
+    </a>
+  )}
+</nav>
