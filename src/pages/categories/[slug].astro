@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import BlogPost from '../../components/BlogPost.astro';
 import Pagination from '../../components/Pagination.astro';
 import { getCategories, getPosts } from '../../lib/api';
-import { getPaginationData } from '../../utils/pagination';
+import { getPaginationData } from '../../lib/utils/pagination';
 
 export async function getStaticPaths() {
   const categories = await getCategories();

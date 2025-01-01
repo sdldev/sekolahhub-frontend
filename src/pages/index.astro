@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import BlogPost from '../components/BlogPost.astro';
 import Pagination from '../components/Pagination.astro';
 import { getPosts, getCategories } from '../lib/api';
-import { getPaginationData } from '../utils/pagination';
+import { getPaginationData } from '../lib/utils/pagination';
 
 const ITEMS_PER_PAGE = 6;
 const page = Number(Astro.url.searchParams.get('page') || 1);
