@@ -1,4 +1,4 @@
-const API_STORAGE_URL = 'https://sekolahhubbackend.indatechno.com/storage/posts/images';
+const API_STORAGE_URL = `${import.meta.env.PUBLIC_API_URL}/storage/posts/images`;  
 
 export function getImageUrl(imageName: string): string {
   return `${API_STORAGE_URL}/${imageName}`;
