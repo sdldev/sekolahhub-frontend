@@ -1,13 +1,9 @@
 ---
 import { getCategories } from '../lib/api';
 
-interface Category {
-  slug: string;
-  title: string;
-}
-
-const categories: Category[] = await getCategories();
+const categories = await getCategories();
 ---
+
 <nav class="sticky top-0 z-50 bg-primary-dark/95 backdrop-blur">
   <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
     <a href="/" class="text-2xl font-bold text-white">Blog</a>
@@ -19,7 +15,7 @@ const categories: Category[] = await getCategories();
           Categories
         </button>
         <div class="hidden group-hover:block absolute right-0 mt-1 w-48 bg-primary-dark/95 rounded-md shadow-lg py-1">
-          {categories.map((category: Category) => (
+          {categories.map((category) => (
             <a 
               href={`/categories/${category.slug}`}
               class="block px-4 py-2 text-sm text-white hover:bg-primary-light/10 transition-colors"

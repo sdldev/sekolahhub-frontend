@@ -1,5 +1,5 @@
 ---
-import { getImageUrl, getFallbackImageUrl } from '../lib/utils/image';
+import { getImageUrl, getFallbackImageUrl } from '../utils/image';
 
 interface Props {
   title: string;
@@ -20,6 +20,7 @@ const imageUrl = image ? getImageUrl(image) : getFallbackImageUrl();
     src={imageUrl}
     alt={imagecaption}
     class="post-image"
+    onerror="this.onerror=null; this.src='https://placehold.co/600x400?text=No+Image'"
   />
   <div class="post-content">
     <h2 class="post-title">
