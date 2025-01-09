@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import { getPostBySlug } from '../../lib/api';
 import { getImageUrl, getFallbackImageUrl } from '../../utils/image';
 
-// Remove getStaticPaths
 const { slug } = Astro.params;
 const post = await getPostBySlug(slug);
 
@@ -14,6 +13,47 @@ if (!post) {
 const imageUrl = post.image ? getImageUrl(post.image) : getFallbackImageUrl();
 ---
 
-<h1>{post.title}</h1>
-<p>{post.content}</p>
-<img src={imageUrl} alt={post.imagecaption} />
+<Layout>
+  <article class="post-container">
+    <header class="post-header">
+      <h1 class="post-title">{post.title}</h1>
+      <img src={imageUrl} alt={post.title} class="post-image" />
+    </header>
+    <div class="post-content" set:html={post.content}></div>
+  </article>
+</Layout>
+
+<style>
+  .post-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .post-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .post-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+
+  .post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .post-content {
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: #444;
+  }
+</style>
